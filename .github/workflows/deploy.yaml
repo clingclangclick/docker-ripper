@@ -39,8 +39,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ GITHUB_REPOSITORY }}:${{ steps.version.outputs.TAG_NAME }}
-            ${{ GITHUB_REPOSITORY }}:latest
-            ghcr.io/${{ GITHUB_REPOSITORY }}:${{ steps.version.outputs.TAG_NAME }}
-            ghcr.io/${{ GITHUB_REPOSITORY }}:latest
+            ${{ github.repository }}:${{ steps.version.outputs.TAG_NAME }}
+            ${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ steps.version.outputs.TAG_NAME }}
+            ghcr.io/${{ github.repository }}:latest
 
