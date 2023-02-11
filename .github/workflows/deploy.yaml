@@ -34,4 +34,5 @@ jobs:
           push: true
           tags: |
             clingclangclick/docker-ripper:${{ steps.version.outputs.TAG_NAME }}
+            clingclangclick/docker-ripper:latest
 
