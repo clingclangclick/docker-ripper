@@ -41,6 +41,4 @@ jobs:
           tags: |
             ${{ github.repository }}:${{ steps.version.outputs.TAG_NAME }}
             ${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ steps.version.outputs.TAG_NAME }}
-            ghcr.io/${{ github.repository }}:latest
 
