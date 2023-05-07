@@ -3,9 +3,7 @@
 echo "Using this daily? Please sponsor me at https://github.com/sponsors/rix1337 - any amount counts!"
 
 # copy default script
-if [[ ! -f /config/ripper.sh ]]; then
- cp /ripper/ripper.sh /config/ripper.sh
-fi
+cp -f /ripper/ripper.sh /config/ripper.sh
 
 # copy default settings
 if [[ ! -f /config/settings.conf ]] && [[  ! -f /config/enter-your-key-then-rename-to.settings.conf ]]; then
