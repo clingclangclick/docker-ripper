@@ -122,7 +122,7 @@ while true; do
 			sdparm --command=eject $DRIVE
 		fi
 		# permissions
-		chown -R $CHOWN_OWNER:CHOWN_GROUP "$STORAGE_BD" && chmod -R g+rw "$STORAGE_BD"
+		chown -R $CHOWN_OWNER:$CHOWN_GROUP "$STORAGE_BD" && chmod -R g+rw "$STORAGE_BD"
 	fi
 
 	if [ "$DVD" = 'DRV:0,2,999,1,"' ]; then
