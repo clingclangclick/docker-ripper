@@ -24,7 +24,7 @@ jobs:
         with:
           base-image: rix1337/docker-ripper:latest
           image: ${{ github.repository }}:latest
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
 
   build:
     needs: check
