@@ -41,6 +41,7 @@ RUN <<-eot
         id3 \
         id3v2 \
         lame \
+	libcurl4 \
         mkcue \
         python3 \
         python3-pip \
