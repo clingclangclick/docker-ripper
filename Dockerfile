@@ -113,7 +113,7 @@ RUN <<-eot
         rm "$ball.tgz"
         cd "$ball"
         if [ -f configure ]; then
-            ./configure --prefix="$PREFIX"
+            ./configure --prefix="$PREFIX" --disable-gui --disable-qt5
         else
             mkdir -p tmp
             touch tmp/eula_accepted
