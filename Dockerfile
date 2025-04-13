@@ -1,8 +1,6 @@
 # syntax=docker/dockerfile:1.5
 FROM phusion/baseimage:jammy-1.0.1
 
-ARG NOBODY_UID=99
-ARG NOBODY_GID=100
 ARG FFMPEG_VER=7.1.1
 
 # Set correct environment variables
@@ -20,10 +18,7 @@ COPY root/ /
 
 RUN <<-eot
     #!/usr/bin/env bash
-    usermod -u ${NOBODY_UID} nobody
-    usermod -g ${NOBODY_GID} nobody
-    usermod -d /home nobody
-    chown -R nobody:users /home
+    set -e
 
     chmod +x /etc/my_init.d/*.sh
     chmod -R 777 /tmp
@@ -156,6 +151,14 @@ RUN <<-eot
         /tmp/* \
         /var/lib/apt/lists/* \
         /var/tmp/*
+
+    mkdir /root/.MakeMKV
+    chmod 777 /root/.MakeMKV
+    ln -s /root/.MakeMKV /persist
 eot
 
 ENV PATH="$PATH:/usr/local/bin:/usr/local/sbin"
+
+VOLUME /config
+VOLUME /persist
+VOLUME /out
