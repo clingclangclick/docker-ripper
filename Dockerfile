@@ -3,6 +3,7 @@ FROM phusion/baseimage:jammy-1.0.1
 
 ARG NOBODY_UID=99
 ARG NOBODY_GID=100
+ARG FFMPEG_VER=7.1.1
 
 # Set correct environment variables
 ENV HOME /root
@@ -82,17 +83,31 @@ ADD "https://forum.makemkv.com/forum/viewtopic.php?f=3&t=224" latest_post
 # DEALINGS IN THE SOFTWARE.
 RUN <<-eot
     #!/usr/bin/env bash
+    set -ex
+
+    mkdir -p /usr/share/man/man1
+    apt-get install -y --no-install-recommends openjdk-11-jre-headless
+
+    savedAptMark=$(apt-mark showmanual)
+    # libavcodec-dev
+    apt-get install -y --no-install-recommends ca-certificates g++ gcc gnupg dirmngr libexpat-dev libssl-dev make pkg-config qtbase5-dev wget zlib1g-dev yasm libfdk-aac-dev
+    apt-get clean
+
+    (
+    wget -O ffmpeg.tar.gz https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VER}.tar.gz
+    tar -xzf ffmpeg.tar.gz  
+    cd ffmpeg-${FFMPEG_VER}
+    ./configure --prefix=/tmp/ffmpeg --enable-static --disable-shared --enable-pic --enable-libfdk-aac
+    make install 
+    )
+
+    PKG_CONFIG_PATH=/tmp/ffmpeg/lib/pkgconfig
+    export PKG_CONFIG_PATH
+
     MAKEMKV_VERSION=$(curl --silent 'https://forum.makemkv.com/forum/viewtopic.php?f=3&t=224' \
 	| awk -vRS="</a>" '{ gsub(/.*<a +href=\042/,""); gsub(/\042.*/,""); print; }' \
 	| grep -e "^https://www.makemkv.com/download/makemkv-.*tar.gz$" \
 	| cut -d- -f3- | cut -d. -f1-3 | uniq | sort | tail -n1)
-    
-    mkdir -p /usr/share/man/man1
-    apt-get install -y --no-install-recommends openjdk-11-jre-headless
-    
-    savedAptMark=$(apt-mark showmanual)
-    apt-get install -y --no-install-recommends ca-certificates g++ gcc gnupg dirmngr libavcodec-dev libexpat-dev libssl-dev make pkg-config qtbase5-dev wget zlib1g-dev
-    apt-get clean
     
     wget -O 'sha256sums.txt.sig' "https://www.makemkv.com/download/makemkv-sha-${MAKEMKV_VERSION}.txt"
     export GNUPGHOME=$(mktemp -d)
@@ -142,3 +157,5 @@ RUN <<-eot
         /var/lib/apt/lists/* \
         /var/tmp/*
 eot
+
+ENV PATH="$PATH:/usr/local/bin:/usr/local/sbin"
