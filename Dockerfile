@@ -44,7 +44,8 @@ RUN <<-eot
         sdparm \
         speex \
         vorbis-tools \
-        vorbisgain
+        vorbisgain \
+	libfdk-aac2
 
     pip3 install docopt flask waitress
     apt-get -y autoremove
@@ -85,16 +86,16 @@ RUN <<-eot
 
     savedAptMark=$(apt-mark showmanual)
     # libavcodec-dev
-    apt-get install -y --no-install-recommends ca-certificates g++ gcc gnupg dirmngr libexpat-dev libssl-dev make pkg-config qtbase5-dev wget zlib1g-dev yasm libfdk-aac-dev
+    apt-get install -y --no-install-recommends ca-certificates g++ gcc gnupg dirmngr libexpat-dev libssl-dev make pkg-config qtbase5-dev wget zlib1g-dev yasm libfdk-aac-dev libavcodec-dev
     apt-get clean
 
-    (
-    wget -O ffmpeg.tar.gz https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VER}.tar.gz
-    tar -xzf ffmpeg.tar.gz  
-    cd ffmpeg-${FFMPEG_VER}
-    ./configure --prefix=/tmp/ffmpeg --enable-static --disable-shared --enable-pic --enable-libfdk-aac
-    make install 
-    )
+#    (
+#    wget -O ffmpeg.tar.gz https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VER}.tar.gz
+#    tar -xzf ffmpeg.tar.gz  
+#    cd ffmpeg-${FFMPEG_VER}
+#    ./configure --prefix=/tmp/ffmpeg --enable-static --disable-shared --enable-pic --enable-libfdk-aac
+#    make install 
+#    )
 
     PKG_CONFIG_PATH=/tmp/ffmpeg/lib/pkgconfig
     export PKG_CONFIG_PATH
